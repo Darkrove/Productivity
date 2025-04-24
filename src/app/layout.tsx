@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" suppressHydrationWarning>
             <body
-                className={cn('min-h-screen bg-background font-sans antialiased', inter.className)}
+                className={cn('overflow-hidden min-h-screen bg-background font-sans antialiased', inter.className)}
             >
                 <AuthProvider>
                     <ThemeProvider

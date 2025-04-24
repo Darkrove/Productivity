@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { MoreHorizontal, Heart } from 'lucide-react';
+import { MoreHorizontal, Heart, MoreVertical } from 'lucide-react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -100,16 +100,16 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
 
     return (
         <>
-            <Card className={cn('overflow-hidden transition-all', getColorClass(note.color))}>
-                <CardHeader className="p-4 pb-0 flex justify-between items-start">
+            <Card className={cn('overflow-hidden transition-all flex flex-col h-full', getColorClass(note.color))}>
+                <CardHeader className="p-4 pb-0 flex flex-row justify-between items-center">
                     <div>
                         <h3 className="font-semibold">{note.title}</h3>
                         <p className="text-xs text-muted-foreground">{note.category}</p>
                     </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                                <MoreHorizontal className="h-4 w-4" />
+                            <Button variant="outline" size="icon">
+                                <MoreVertical className="h-4 w-4" />
                                 <span className="sr-only">More options</span>
                             </Button>
                         </DropdownMenuTrigger>
@@ -124,11 +124,11 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
                     </DropdownMenu>
                 </CardHeader>
 
-                <CardContent className="p-4">
+                <CardContent className="p-4 flex-grow">
                     {note.content && <p className="text-sm whitespace-pre-line">{note.content}</p>}
                 </CardContent>
 
-                <CardFooter className="border-t p-4 flex justify-between items-center bg-white bg-opacity-50">
+                <CardFooter className="border-t p-4 flex justify-between items-center bg-white bg-opacity-50 mt-auto">
                     <div className="flex items-center gap-2">
                         <Avatar className="h-6 w-6">
                             <AvatarImage src={note.creator_image || ''} alt={note.creator_name} />

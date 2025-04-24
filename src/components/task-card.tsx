@@ -8,7 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { updateTaskStatus, deleteTask } from '@/actions/task-actions';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import { Clock, MoreHorizontal } from 'lucide-react';
+import { Clock, MoreHorizontal, MoreVertical } from 'lucide-react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -120,8 +120,8 @@ export function TaskCard({ task, workspaceId, members = [], userId, onDelete }: 
 
     return (
         <>
-            <Card className={cn('transition-all', isCompleted ? 'opacity-75' : '')}>
-                <CardContent className="p-4">
+            <Card className={cn('overflow-hidden flex flex-col h-full transition-all', isCompleted ? 'opacity-75' : '')}>
+                <CardContent className="p-4 flex-grow">
                     <div className="flex items-start justify-between">
                         <div className="flex items-start gap-2">
                             <Checkbox
@@ -147,8 +147,8 @@ export function TaskCard({ task, workspaceId, members = [], userId, onDelete }: 
                         </div>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                    <MoreHorizontal className="h-4 w-4" />
+                                <Button variant="outline" size="icon">
+                                    <MoreVertical className="h-4 w-4" />
                                     <span className="sr-only">More options</span>
                                 </Button>
                             </DropdownMenuTrigger>
@@ -185,7 +185,7 @@ export function TaskCard({ task, workspaceId, members = [], userId, onDelete }: 
                 </CardContent>
 
                 {task.assigned_to && (
-                    <CardFooter className="border-t p-4 flex justify-between items-center">
+                    <CardFooter className="border-t p-4 flex justify-between items-center mt-auto">
                         <div className="flex items-center gap-2">
                             <Avatar className="h-6 w-6">
                                 <AvatarImage
