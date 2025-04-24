@@ -70,11 +70,14 @@ export function CreateWorkspaceDialog({
                 description: 'Workspace created successfully',
             });
 
+            // Reset the form before closing the dialog
+            const form = event.currentTarget;
+            if (form) {
+                form.reset();
+            }
+
             setIsOpen(false);
             setIsLoading(false);
-
-            // Reset the form
-            event.currentTarget.reset();
 
             // Refresh the page to show the new workspace
             router.refresh();

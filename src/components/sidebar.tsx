@@ -9,6 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, Plus, X } from 'lucide-react';
 import { CreateWorkspaceDialog } from './create-workspace-dialog';
+import { useSession } from 'next-auth/react';
 
 interface SidebarProps {
     workspaces: {
@@ -22,6 +23,7 @@ export function Sidebar({ workspaces, className }: SidebarProps) {
     const pathname = usePathname();
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
     const [isMobileOpen, setIsMobileOpen] = useState(false);
+    const { data: session } = useSession();
 
     return (
         <>
@@ -212,7 +214,11 @@ export function Sidebar({ workspaces, className }: SidebarProps) {
                 </ScrollArea>
             </div>
 
-            {/* <CreateWorkspaceDialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen} /> */}
+            <CreateWorkspaceDialog 
+                open={isCreateDialogOpen} 
+                onOpenChange={setIsCreateDialogOpen} 
+                userId={Number.parseInt(session?.user?.id || '0')}
+            />
         </>
     );
 }
