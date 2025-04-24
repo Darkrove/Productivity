@@ -18,6 +18,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { MobileSidebar } from '@/components/mobile-sidebar';
 import { CreateTaskDialog } from '@/components/create-task-dialog';
 import { useEffect, useState } from 'react';
+import { ModeSwitcher } from '@/components/mode-switcher';
 
 export function Header() {
     const { data: session } = useSession();
@@ -79,13 +80,14 @@ export function Header() {
             </div>
 
             <div className="ml-auto flex items-center gap-2">
-                {workspaceId && (
+                {/* {workspaceId && (
                     <CreateTaskDialog
                         workspaceId={workspaceId}
                         members={members}
                         userId={Number.parseInt(session?.user?.id || '0')}
                     />
-                )}
+                )} */}
+                <ModeSwitcher />
 
                 <Button variant="outline" size="icon">
                     <Bell className="h-5 w-5" />

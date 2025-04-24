@@ -2,7 +2,7 @@ import type React from 'react';
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider } from '@/components/providers';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import AuthProvider from '@/components/auth-provider';
@@ -18,14 +18,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" suppressHydrationWarning>
             <body
-                className={cn('overflow-hidden min-h-screen bg-background font-sans antialiased', inter.className)}
+                className={cn(
+                    'overflow-hidden min-h-screen bg-background font-sans antialiased',
+                    inter.className
+                )}
             >
                 <AuthProvider>
                     <ThemeProvider
                         attribute="class"
-                        defaultTheme="light"
+                        defaultTheme="system"
                         enableSystem
                         disableTransitionOnChange
+                        enableColorScheme
                     >
                         {children}
                         <Toaster />

@@ -53,15 +53,15 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
     const getColorClass = (color: string) => {
         switch (color) {
             case 'yellow':
-                return 'bg-yellow-100';
+                return 'bg-yellow-100 text-yellow-900 dark:bg-yellow-900 dark:text-yellow-100';
             case 'blue':
-                return 'bg-blue-100';
+                return 'bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100';
             case 'orange':
-                return 'bg-orange-100';
+                return 'bg-orange-100 text-orange-900 dark:bg-orange-900 dark:text-orange-100';
             case 'green':
-                return 'bg-green-100';
+                return 'bg-green-100 text-green-900 dark:bg-green-900 dark:text-green-100';
             default:
-                return 'bg-card';
+                return 'bg-card text-card-foreground:';
         }
     };
 
@@ -104,7 +104,7 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
                 <CardHeader className="p-4 pb-0 flex flex-row justify-between items-center">
                     <div>
                         <h3 className="font-semibold">{note.title}</h3>
-                        <p className="text-xs text-muted-foreground">{note.category}</p>
+                        <p className="text-xs text-muted-foreground dark:text-white">{note.category}</p>
                     </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -134,7 +134,7 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
                             <AvatarImage src={note.creator_image || ''} alt={note.creator_name} />
                             <AvatarFallback>{note.creator_name.charAt(0)}</AvatarFallback>
                         </Avatar>
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-muted-foreground dark:text-white">
                             {formatDate(note.created_at)}
                         </span>
                     </div>
@@ -143,7 +143,7 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
                         variant="ghost"
                         size="icon"
                         onClick={() => setLiked(!liked)}
-                        className={cn(liked ? 'text-red-500' : 'text-muted-foreground')}
+                        className={cn(liked ? 'text-red-500' : 'text-muted-foreground dark:text-white')}
                     >
                         <Heart className="h-4 w-4" />
                         <span className="sr-only">Like</span>
