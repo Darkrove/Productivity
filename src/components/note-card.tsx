@@ -100,11 +100,18 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
 
     return (
         <>
-            <Card className={cn('overflow-hidden transition-all flex flex-col h-full', getColorClass(note.color))}>
+            <Card
+                className={cn(
+                    'overflow-hidden transition-all flex flex-col h-full',
+                    getColorClass(note.color)
+                )}
+            >
                 <CardHeader className="p-4 pb-0 flex flex-row justify-between items-center">
                     <div>
                         <h3 className="font-semibold">{note.title}</h3>
-                        <p className="text-xs text-muted-foreground dark:text-white">{note.category}</p>
+                        <p className="text-xs text-muted-foreground dark:text-white">
+                            {note.category}
+                        </p>
                     </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -143,7 +150,9 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
                         variant="ghost"
                         size="icon"
                         onClick={() => setLiked(!liked)}
-                        className={cn(liked ? 'text-red-500' : 'text-muted-foreground dark:text-white')}
+                        className={cn(
+                            liked ? 'text-red-500' : 'text-muted-foreground dark:text-white'
+                        )}
                     >
                         <Heart className="h-4 w-4" />
                         <span className="sr-only">Like</span>
