@@ -8,6 +8,7 @@ import { Plus } from 'lucide-react';
 import { NoteCard, NoteCardProps } from '@/components/note-card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CreateNoteDialog } from '@/components/create-note-dialog';
+import { Member } from '@/components/create-task-dialog';
 
 type NotesPageProps = {
     params: Promise<{ id: string }>;
@@ -42,6 +43,17 @@ export default async function NotesPage({ params }: NotesPageProps) {
 
     const workspace = workspaceResult[0];
 
+    // Get workspace members
+    const membersResult = await query(
+        `SELECT u.id, u.name, u.email, u.image, wm.role
+   FROM workspace_members wm
+   JOIN users u ON wm.user_id = u.id
+   WHERE wm.workspace_id = $1`,
+        [workspaceId]
+    );
+
+    const members = membersResult as Member[];
+
     // Get workspace notes
     const notesResult = await query(
         `SELECT n.*, u.name as creator_name, u.image as creator_image 
@@ -62,8 +74,8 @@ export default async function NotesPage({ params }: NotesPageProps) {
     return (
         <div className="flex flex-col gap-4">
             <DashboardHeader
-                heading="Notes"
-                text={`${workspace.name} · ${notes.length} note${notes.length !== 1 ? 's' : ''}`}
+                heading={workspace.name}
+                text={`${members.length} member${members.length !== 1 ? 's' : ''} · ${notes.length} note${notes.length !== 1 ? 's' : ''}`}
                 workspaceId={workspaceId}
                 workspaceName={workspace.name}
                 isOwner={isOwner}
