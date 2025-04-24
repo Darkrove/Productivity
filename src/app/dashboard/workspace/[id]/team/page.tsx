@@ -55,16 +55,16 @@ export default async function TeamPage({ params }: TeamPageProps) {
     const members = membersResult;
 
     // Get pending invitations
-    const invitationsResult = await query(
-        `SELECT wi.*, u.name as inviter_name 
-     FROM workspace_invitations wi
-     JOIN users u ON wi.invited_by = u.id
-     WHERE wi.workspace_id = $1 AND wi.status = 'pending'
-     ORDER BY wi.created_at DESC`,
-        [workspaceId]
-    );
+    // const invitationsResult = await query(
+    //     `SELECT wi.*, u.name as inviter_name
+    //  FROM workspace_invitations wi
+    //  JOIN users u ON wi.invited_by = u.id
+    //  WHERE wi.workspace_id = $1 AND wi.status = 'pending'
+    //  ORDER BY wi.created_at DESC`,
+    //     [workspaceId]
+    // );
 
-    const invitations = invitationsResult;
+    // const invitations = invitationsResult;
 
     // Check if user is owner or admin
     const isOwnerOrAdmin = members.some(
@@ -115,7 +115,7 @@ export default async function TeamPage({ params }: TeamPageProps) {
                 ))}
             </div>
 
-            {invitations.length > 0 && (
+            {/* {invitations.length > 0 && (
                 <div className="mt-8">
                     <h2 className="text-xl font-semibold mb-4">Pending Invitations</h2>
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -135,7 +135,7 @@ export default async function TeamPage({ params }: TeamPageProps) {
                         ))}
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 }
