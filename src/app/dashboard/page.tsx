@@ -153,8 +153,8 @@ export default async function DashboardPage() {
                                             className={cn(
                                                 'rounded-full px-2 py-1 text-xs font-medium',
                                                 task.status === 'completed'
-                                                    ? 'bg-green-100 text-green-800'
-                                                    : 'bg-blue-100 text-blue-800'
+                                                    ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100'
+                                                    : 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100'
                                             )}
                                         >
                                             {task.status}
@@ -238,14 +238,14 @@ function getTimeOfDay() {
 function getColorClass(color: string) {
     switch (color) {
         case 'yellow':
-            return 'bg-yellow-100 text-yellow-800';
+            return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100';
         case 'blue':
-            return 'bg-blue-100 text-blue-800';
+            return 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100';
         case 'orange':
-            return 'bg-orange-100 text-orange-800';
+            return 'bg-orange-100 text-orange-800 dark:bg-orange-800 dark:text-orange-100';
         case 'green':
-            return 'bg-green-100 text-green-800';
+            return 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100';
         default:
-            return 'bg-gray-100 text-gray-800';
+            return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100';
     }
 }
