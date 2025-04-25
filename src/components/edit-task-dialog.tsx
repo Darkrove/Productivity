@@ -207,7 +207,7 @@ export function EditTaskDialog({
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="submit" disabled={isLoading}>
+                        <Button className='w-full' type="submit" disabled={isLoading}>
                             {isLoading ? 'Updating...' : 'Update Task'}
                         </Button>
                     </DialogFooter>

@@ -104,7 +104,7 @@ export function EditWorkspaceDialog({
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="submit" disabled={isLoading}>
+                        <Button className='w-full' type="submit" disabled={isLoading}>
                             {isLoading ? 'Saving...' : 'Save Changes'}
                         </Button>
                     </DialogFooter>
