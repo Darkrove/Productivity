@@ -1,10 +1,9 @@
 'use client';
 
 import type React from 'react';
-
 import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,6 +13,8 @@ import { CheckSquare } from 'lucide-react';
 
 export default function LoginPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const returnUrl = searchParams.get('returnUrl') || '/dashboard'; // 👈 default fallback
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -29,7 +30,7 @@ export default function LoginPage() {
             const result = await signIn('credentials', {
                 email,
                 password,
-                redirect: false,
+                redirect: false, // 👈 Important: prevent auto redirect
             });
 
             if (result?.error) {
@@ -41,9 +42,9 @@ export default function LoginPage() {
                 setIsLoading(false);
                 return;
             }
-            console.log(result);
 
-            router.push('/dashboard');
+            // ✅ Respect returnUrl and redirect there
+            router.push(returnUrl);
             router.refresh();
         } catch (error) {
             toast({
