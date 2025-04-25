@@ -55,16 +55,16 @@ export default async function TeamPage({ params }: TeamPageProps) {
     const members = membersResult;
 
     // Get pending invitations
-    // const invitationsResult = await query(
-    //     `SELECT wi.*, u.name as inviter_name
-    //  FROM workspace_invitations wi
-    //  JOIN users u ON wi.invited_by = u.id
-    //  WHERE wi.workspace_id = $1 AND wi.status = 'pending'
-    //  ORDER BY wi.created_at DESC`,
-    //     [workspaceId]
-    // );
+    const invitationsResult = await query(
+        `SELECT wi.*, u.name as inviter_name
+     FROM workspace_invitations wi
+     JOIN users u ON wi.invited_by = u.id
+     WHERE wi.workspace_id = $1 AND wi.status = 'pending'
+     ORDER BY wi.created_at DESC`,
+        [workspaceId]
+    );
 
-    // const invitations = invitationsResult;
+    const invitations = invitationsResult;
 
     // Check if user is owner or admin
     const isOwnerOrAdmin = members.some(
@@ -94,7 +94,7 @@ export default async function TeamPage({ params }: TeamPageProps) {
                                 <AvatarImage src={member.image || ''} alt={member.name} />
                                 <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
                             </Avatar>
-                            <div className="flex-1">
+                            <div className="flex-1 truncate">
                                 <h3 className="font-medium">{member.name}</h3>
                                 <p className="text-sm text-muted-foreground">{member.email}</p>
                                 <div
@@ -115,12 +115,12 @@ export default async function TeamPage({ params }: TeamPageProps) {
                 ))}
             </div>
 
-            {/* {invitations.length > 0 && (
+            {invitations.length > 0 && (
                 <div className="mt-8">
                     <h2 className="text-xl font-semibold mb-4">Pending Invitations</h2>
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                         {invitations.map(invitation => (
-                            <Card key={invitation.id}>
+                            <Card key={invitation.id} className='truncate'>
                                 <CardContent className="p-6">
                                     <h3 className="font-medium">{invitation.email}</h3>
                                     <p className="text-sm text-muted-foreground">
@@ -135,7 +135,7 @@ export default async function TeamPage({ params }: TeamPageProps) {
                         ))}
                     </div>
                 </div>
-            )} */}
+            )}
         </div>
     );
 }
