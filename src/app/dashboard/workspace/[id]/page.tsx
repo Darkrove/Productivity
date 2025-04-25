@@ -102,18 +102,6 @@ export default async function WorkspacePage({ params }: WorkspacePageProps) {
                         ) : (
                             <div className="col-span-full text-center py-8">
                                 <p className="text-muted-foreground">No active tasks found.</p>
-                                <Button variant="outline" className="mt-4" asChild>
-                                    <CreateTaskDialog
-                                        workspaceId={workspaceId}
-                                        members={members}
-                                        userId={userId}
-                                    >
-                                        <div className="flex items-center gap-1">
-                                            <Plus className="h-4 w-4" />
-                                            Create a task
-                                        </div>
-                                    </CreateTaskDialog>
-                                </Button>
                             </div>
                         )}
                     </div>

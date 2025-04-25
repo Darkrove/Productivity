@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { MoreHorizontal, Users, Pencil, Trash2 } from 'lucide-react';
+import { MoreHorizontal, Users, Pencil, Trash2, MoreVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -71,7 +71,7 @@ export function WorkspaceMenu({ workspaceId, workspaceName, isOwner, userId }: W
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon">
-                        <MoreHorizontal className="h-4 w-4" />
+                        <MoreVertical className="h-4 w-4" />
                         <span className="sr-only">Workspace options</span>
                     </Button>
                 </DropdownMenuTrigger>
