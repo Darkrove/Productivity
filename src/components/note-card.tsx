@@ -142,7 +142,7 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
                             <AvatarFallback>{note.creator_name.charAt(0)}</AvatarFallback>
                         </Avatar>
                         
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-muted-foreground dark:text-white">
                                 {note.creator_name}
                             </span>
                     </div>
