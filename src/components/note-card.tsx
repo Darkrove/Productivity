@@ -141,22 +141,14 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
                             <AvatarImage src={note.creator_image || ''} alt={note.creator_name} />
                             <AvatarFallback>{note.creator_name.charAt(0)}</AvatarFallback>
                         </Avatar>
-                        <span className="text-xs text-muted-foreground dark:text-white">
-                            {formatDate(note.created_at)}
-                        </span>
+                        
+                        <span className="text-xs text-muted-foreground">
+                                {note.creator_name}
+                            </span>
                     </div>
-
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => setLiked(!liked)}
-                        className={cn(
-                            liked ? 'text-red-500' : 'text-muted-foreground dark:text-white'
-                        )}
-                    >
-                        <Heart className="h-4 w-4" />
-                        <span className="sr-only">Like</span>
-                    </Button>
+                    <span className="text-xs text-muted-foreground dark:text-white">
+                            Created: {formatDate(note.created_at)}
+                        </span>
                 </CardFooter>
             </Card>
 
