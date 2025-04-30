@@ -92,7 +92,7 @@ export function WorkspaceMenu({
         <>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon">
+                    <Button size="icon">
                         <MoreVertical className="h-4 w-4" />
                         <span className="sr-only">Workspace options</span>
                     </Button>

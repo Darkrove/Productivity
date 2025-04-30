@@ -45,7 +45,7 @@ export default function InfoLanding({ data, reverse = false }: InfoLandingProps)
                     >
                         <div className="aspect-video">
                             <Image
-                                className="size-full object-cover object-center"
+                                className="size-full object-cover object-center dark:bg-gray-100"
                                 src={data.image}
                                 alt={data.title}
                                 width={1000}

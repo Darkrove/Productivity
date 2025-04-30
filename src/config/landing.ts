@@ -5,7 +5,7 @@ export const infos: InfoLdg[] = [
     title: "Organize Your Life",
     description:
       "Take control of your tasks and boost your productivity with our intuitive todo app. Create, manage, and complete your tasks with ease, all in one place.",
-    image: "/illustrations/work-from-home.jpg",
+    image: "/illustrations/work-from-home.svg",
     list: [
       {
         title: "Simple & Intuitive",
