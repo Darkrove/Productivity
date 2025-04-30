@@ -98,7 +98,7 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
                     className="w-full"
                     onClick={() => setIsCreateDialogOpen(true)}
                   >
-                    <span className="text-sm font-semibold">Create Workspaces</span>
+                    <span className="text-sm font-semibold">Create Workspace</span>
                     <Icons.add className="size-5" />
                   </Button>
                 </div>
