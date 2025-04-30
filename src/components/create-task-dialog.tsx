@@ -1,7 +1,6 @@
 'use client';
 
 import type React from 'react';
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,7 +10,6 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,7 +23,6 @@ import {
 } from '@/components/ui/select';
 import { createTask } from '@/actions/task-actions';
 import { useToast } from '@/hooks/use-toast';
-import { Plus } from 'lucide-react';
 
 export interface Member {
     id: number;
@@ -39,17 +36,18 @@ interface CreateTaskDialogProps {
     workspaceId: number;
     members: Member[];
     userId: number;
-    children?: React.ReactNode;
+    open: boolean;
+    onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function CreateTaskDialog({
     workspaceId,
     members,
     userId,
-    children,
+    open,
+    onOpenChange,
 }: CreateTaskDialogProps) {
     const { toast } = useToast();
-    const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -78,7 +76,7 @@ export function CreateTaskDialog({
                 description: 'Your task has been created successfully',
             });
 
-            setOpen(false);
+            onOpenChange(false);
             setIsLoading(false);
         } catch (error) {
             toast({
@@ -91,17 +89,7 @@ export function CreateTaskDialog({
     }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                {children || (
-                    <Button size="sm" className="h-8 gap-1">
-                        <Plus className="h-4 w-4" />
-                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                            New Task
-                        </span>
-                    </Button>
-                )}
-            </DialogTrigger>
+        <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={onSubmit}>
                     <DialogHeader>
@@ -111,22 +99,11 @@ export function CreateTaskDialog({
                     <div className="grid gap-4 py-4">
                         <div className="grid gap-2">
                             <Label htmlFor="title">Title</Label>
-                            <Input
-                                id="title"
-                                name="title"
-                                placeholder="Task title"
-                                disabled={isLoading}
-                                required
-                            />
+                            <Input id="title" name="title" placeholder="Task title" disabled={isLoading} required />
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="description">Description</Label>
-                            <Textarea
-                                id="description"
-                                name="description"
-                                placeholder="Task description"
-                                disabled={isLoading}
-                            />
+                            <Textarea id="description" name="description" placeholder="Task description" disabled={isLoading} />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="grid gap-2">
@@ -144,13 +121,7 @@ export function CreateTaskDialog({
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="duration">Duration (minutes)</Label>
-                                <Input
-                                    id="duration"
-                                    name="duration"
-                                    type="number"
-                                    placeholder="60"
-                                    disabled={isLoading}
-                                />
+                                <Input id="duration" name="duration" type="number" placeholder="60" disabled={isLoading} />
                             </div>
                         </div>
                         <div className="grid gap-2">
@@ -160,7 +131,7 @@ export function CreateTaskDialog({
                                     <SelectValue placeholder="Select member" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {members.map(member => (
+                                    {members.map((member) => (
                                         <SelectItem key={member.id} value={member.id.toString()}>
                                             {member.name}
                                         </SelectItem>

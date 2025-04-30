@@ -18,7 +18,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { MobileSidebar } from '@/components/mobile-sidebar';
 import { CreateTaskDialog } from '@/components/create-task-dialog';
 import { useEffect, useState } from 'react';
-import { ModeSwitcher } from '@/components/mode-switcher';
+import { ModeSwitcher } from '@/components/layout/mode-switcher';
 
 export function Header() {
     const { data: session } = useSession();

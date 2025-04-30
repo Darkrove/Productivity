@@ -2,7 +2,15 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { MoreHorizontal, Users, Pencil, Trash2, MoreVertical } from 'lucide-react';
+import {
+    MoreVertical,
+    Users,
+    Pencil,
+    Trash2,
+    PlusCircle,
+    StickyNote,
+} from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -10,8 +18,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { InviteMemberDialog } from '@/components/invite-member-dialog';
-import { EditWorkspaceDialog } from '@/components/edit-workspace-dialog';
+
 import {
     AlertDialog,
     AlertDialogAction,
@@ -22,19 +29,34 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+
 import { useToast } from '@/hooks/use-toast';
+import { InviteMemberDialog } from '@/components/invite-member-dialog';
+import { EditWorkspaceDialog } from '@/components/edit-workspace-dialog';
+import { CreateTaskDialog, Member } from '@/components/create-task-dialog';
+import {CreateNoteDialog} from '@/components/create-note-dialog';
 
 interface WorkspaceMenuProps {
     workspaceId: number;
     workspaceName: string;
     isOwner: boolean;
     userId: number;
+    members: Member[];
 }
 
-export function WorkspaceMenu({ workspaceId, workspaceName, isOwner, userId }: WorkspaceMenuProps) {
+export function WorkspaceMenu({
+    workspaceId,
+    workspaceName,
+    isOwner,
+    userId,
+    members,
+}: WorkspaceMenuProps) {
     const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
+    const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
+    const [isNoteDialogOpen, setIsNoteDialogOpen] = useState(false);
+
     const { toast } = useToast();
     const router = useRouter();
 
@@ -70,7 +92,7 @@ export function WorkspaceMenu({ workspaceId, workspaceName, isOwner, userId }: W
         <>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
+                    <Button variant="outline" size="icon">
                         <MoreVertical className="h-4 w-4" />
                         <span className="sr-only">Workspace options</span>
                     </Button>
@@ -79,6 +101,14 @@ export function WorkspaceMenu({ workspaceId, workspaceName, isOwner, userId }: W
                     <DropdownMenuItem onClick={() => setIsInviteDialogOpen(true)}>
                         <Users className="mr-2 h-4 w-4" />
                         Invite Members
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setIsTaskDialogOpen(true)}>
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        Create Task
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setIsNoteDialogOpen(true)}>
+                        <StickyNote className="mr-2 h-4 w-4" />
+                        Create Note
                     </DropdownMenuItem>
                     {isOwner && (
                         <>
@@ -104,33 +134,46 @@ export function WorkspaceMenu({ workspaceId, workspaceName, isOwner, userId }: W
             />
 
             {isOwner && (
-                <>
-                    <EditWorkspaceDialog
-                        open={isEditDialogOpen}
-                        onOpenChange={setIsEditDialogOpen}
-                        workspaceId={workspaceId}
-                        workspaceName={workspaceName}
-                    />
-
-                    <AlertDialog open={isDeleteAlertOpen} onOpenChange={setIsDeleteAlertOpen}>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    This will permanently delete the workspace "{workspaceName}" and
-                                    all its tasks, notes, and events. This action cannot be undone.
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={handleDeleteWorkspace}>
-                                    Delete
-                                </AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-                </>
+                <EditWorkspaceDialog
+                    open={isEditDialogOpen}
+                    onOpenChange={setIsEditDialogOpen}
+                    workspaceId={workspaceId}
+                    workspaceName={workspaceName}
+                />
             )}
+
+            <CreateTaskDialog
+                workspaceId={workspaceId}
+                members={members}
+                userId={userId}
+                open={isTaskDialogOpen}
+                onOpenChange={setIsTaskDialogOpen}
+            />
+
+            <CreateNoteDialog
+                workspaceId={workspaceId}
+                userId={userId}
+                open={isNoteDialogOpen}
+                onOpenChange={setIsNoteDialogOpen}
+            />
+            
+            <AlertDialog open={isDeleteAlertOpen} onOpenChange={setIsDeleteAlertOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This will permanently delete the workspace "{workspaceName}" and
+                            all its tasks, notes, and events. This action cannot be undone.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleDeleteWorkspace}>
+                            Delete
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </>
     );
 }

@@ -1,7 +1,6 @@
 'use client';
 
 import type React from 'react';
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,7 +10,6 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,17 +23,21 @@ import {
 } from '@/components/ui/select';
 import { createNote } from '@/actions/note-actions';
 import { useToast } from '@/hooks/use-toast';
-import { Plus } from 'lucide-react';
 
 interface CreateNoteDialogProps {
     workspaceId: number;
     userId: number;
-    children?: React.ReactNode;
+    open: boolean;
+    onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function CreateNoteDialog({ workspaceId, userId, children }: CreateNoteDialogProps) {
+export function CreateNoteDialog({
+    workspaceId,
+    userId,
+    open,
+    onOpenChange,
+}: CreateNoteDialogProps) {
     const { toast } = useToast();
-    const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -64,30 +66,20 @@ export function CreateNoteDialog({ workspaceId, userId, children }: CreateNoteDi
                 description: 'Your note has been created successfully',
             });
 
-            setOpen(false);
-            setIsLoading(false);
+            onOpenChange(false);
         } catch (error) {
             toast({
                 variant: 'destructive',
                 title: 'Something went wrong',
                 description: 'Please try again later',
             });
+        } finally {
             setIsLoading(false);
         }
     }
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                {children || (
-                    <Button size="sm" className="h-8 gap-1">
-                        <Plus className="h-4 w-4" />
-                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                            New Note
-                        </span>
-                    </Button>
-                )}
-            </DialogTrigger>
+        <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={onSubmit}>
                     <DialogHeader>
