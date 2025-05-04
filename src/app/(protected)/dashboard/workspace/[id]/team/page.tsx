@@ -105,10 +105,10 @@ export default async function TeamPage({ params }: TeamPageProps) {
                   className={cn(
                     'mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-medium',
                     member.role === 'owner'
-                      ? 'bg-blue-100 text-blue-800'
+                      ? 'bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-100'
                       : member.role === 'admin'
-                        ? 'bg-purple-100 text-purple-800'
-                        : 'bg-gray-100 text-gray-800'
+                        ? 'bg-purple-100 text-purple-800 dark:bg-purple-800 dark:text-purple-100'
+                        : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100'
                   )}
                 >
                   {member.role}
@@ -131,7 +131,7 @@ export default async function TeamPage({ params }: TeamPageProps) {
                     Invited by {invitation.inviter_name} on{' '}
                     {new Date(invitation.created_at).toLocaleDateString()}
                   </p>
-                  <div className="mt-1 inline-block rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">
+                  <div className="mt-1 inline-block rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100">
                     Pending
                   </div>
                 </CardContent>
