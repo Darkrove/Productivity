@@ -17,6 +17,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Icons } from '@/components/shared/icons';
 import { SidebarLinkGroup } from '../dashboard/sidebar-link-group';
 import { CreateWorkspaceDialog } from '../create-workspace-dialog';
+import { ShineBorder } from '@/components/ui/shine-border';
 
 interface DashboardSidebarProps {
   links: SidebarNavItem[];
@@ -95,9 +96,10 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
                 <div className="flex items-center justify-between px-4 py-2 text-sm font-medium text-muted-foreground">
                   <Button
                     variant="outline"
-                    className="w-full"
+                    className="w-full relative overflow-hidden"
                     onClick={() => setIsCreateDialogOpen(true)}
                   >
+                     <ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
                     <span className="text-sm font-semibold">Create Workspace</span>
                     <Icons.add className="size-5" />
                   </Button>
@@ -109,9 +111,10 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="size-8"
+                        className="size-8 relative overflow-hidden"
                         onClick={() => setIsCreateDialogOpen(true)}
                       >
+                         <ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
                         <Icons.add className="size-5" />
                         <span className="sr-only">Create Workspace</span>
                       </Button>
@@ -170,9 +173,10 @@ export function MobileSheetSidebar({ links }: DashboardSidebarProps) {
                 <div className="flex w-full items-center justify-between px-4 py-2 text-sm font-medium text-muted-foreground">
                   <Button
                     variant="outline"
-                    className="w-full"
+                    className="relative overflow-hidden w-full"
                     onClick={() => setIsCreateDialogOpen(true)}
                   >
+                    <ShineBorder shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
                     <span className="text-sm font-semibold">Create Workspaces</span>
                     <Icons.add className="size-5" />
                   </Button>
