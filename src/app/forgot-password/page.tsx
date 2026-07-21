@@ -1,19 +1,16 @@
 'use client';
 
 import type React from 'react';
-
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { CheckSquare } from 'lucide-react';
-import { registerUser } from '@/actions/auth-actions';
+import { requestPasswordReset } from '@/actions/auth-actions';
 
-export default function RegisterPage() {
-    const router = useRouter();
+export default function ForgotPasswordPage() {
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -24,12 +21,12 @@ export default function RegisterPage() {
         const formData = new FormData(event.currentTarget);
 
         try {
-            const result = await registerUser(formData);
+            const result = await requestPasswordReset(formData);
 
             if (result.error) {
                 toast({
                     variant: 'destructive',
-                    title: 'Registration failed',
+                    title: 'Request failed',
                     description: result.error,
                 });
                 setIsLoading(false);
@@ -37,17 +34,20 @@ export default function RegisterPage() {
             }
 
             toast({
-                title: 'Registration successful',
-                description: 'You can now sign in with your credentials',
+                title: 'Check your inbox',
+                description: result.success,
             });
 
-            router.push('/login');
+            const form = event.currentTarget as HTMLFormElement | null;
+            form?.reset();
         } catch (error) {
             toast({
                 variant: 'destructive',
                 title: 'Something went wrong',
                 description: 'Please try again later',
             });
+            console.error('Error requesting password reset:', error);
+        } finally {
             setIsLoading(false);
         }
     }
@@ -60,28 +60,15 @@ export default function RegisterPage() {
                         <CheckSquare className="h-6 w-6" />
                         <span className="text-2xl font-bold">Productivity</span>
                     </div>
-                    <h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight">Forgot your password?</h1>
                     <p className="text-sm text-muted-foreground">
-                        Enter your information to create an account
+                        Enter your email and we&apos;ll send you a link to reset it.
                     </p>
                 </div>
 
                 <div className="grid gap-6">
                     <form onSubmit={onSubmit}>
                         <div className="grid gap-4">
-                            <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
-                                <Input
-                                    id="name"
-                                    name="name"
-                                    placeholder="John Doe"
-                                    type="text"
-                                    autoCapitalize="none"
-                                    autoCorrect="off"
-                                    disabled={isLoading}
-                                    required
-                                />
-                            </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email</Label>
                                 <Input
@@ -96,25 +83,13 @@ export default function RegisterPage() {
                                     required
                                 />
                             </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="password">Password</Label>
-                                <Input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    autoCapitalize="none"
-                                    autoComplete="new-password"
-                                    disabled={isLoading}
-                                    required
-                                />
-                            </div>
                             <Button type="submit" disabled={isLoading}>
-                                {isLoading ? 'Creating account...' : 'Create Account'}
+                                {isLoading ? 'Sending link...' : 'Send reset link'}
                             </Button>
                         </div>
                     </form>
                     <div className="text-center text-sm">
-                        Already have an account?{' '}
+                        Remembered your password?{' '}
                         <Link
                             href="/login"
                             className="font-medium text-primary underline-offset-4 hover:underline"

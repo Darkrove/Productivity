@@ -6,12 +6,25 @@ import { redirect } from 'next/navigation';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { randomBytes } from 'crypto';
+import { sendPasswordResetEmail } from '@/lib/email';
 
 const userSchema = z.object({
     name: z.string().min(2, 'Name must be at least 2 characters'),
     email: z.string().email('Invalid email address'),
     password: z.string().min(8, 'Password must be at least 8 characters'),
 });
+
+async function ensurePasswordResetTable() {
+    await query(`
+        CREATE TABLE IF NOT EXISTS password_reset_tokens (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            token TEXT NOT NULL UNIQUE,
+            expires_at TIMESTAMPTZ NOT NULL,
+            created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
+}
 
 export async function registerUser(formData: FormData) {
     const name = formData.get('name') as string;
@@ -51,6 +64,106 @@ export async function registerUser(formData: FormData) {
         }
 
         return { error: 'Something went wrong. Please try again.' };
+    }
+}
+
+export async function requestPasswordReset(formData: FormData) {
+    const email = (formData.get('email') as string | null)?.trim().toLowerCase() ?? '';
+
+    try {
+        const validatedFields = z
+            .object({ email: z.string().email('Invalid email address') })
+            .safeParse({ email });
+
+        if (!validatedFields.success) {
+            return { error: 'Please provide a valid email address.' };
+        }
+
+        await ensurePasswordResetTable();
+
+        const existingUser = await query('SELECT id, email FROM users WHERE email = $1', [
+            validatedFields.data.email,
+        ]);
+
+        if (existingUser.length === 0) {
+            return {
+                success:
+                    'If an account exists for that email, we sent a password reset link.',
+            };
+        }
+
+        const user = existingUser[0];
+        const token = randomBytes(32).toString('hex');
+        const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+
+        await query('DELETE FROM password_reset_tokens WHERE user_id = $1', [user.id]);
+        await query(
+            `INSERT INTO password_reset_tokens (user_id, token, expires_at)
+             VALUES ($1, $2, $3)`,
+            [user.id, token, expiresAt]
+        );
+
+        await sendPasswordResetEmail(validatedFields.data.email, token);
+
+        return {
+            success: 'If an account exists for that email, we sent a password reset link.',
+        };
+    } catch (error) {
+        console.error('Error requesting password reset:', error);
+        return { error: 'Something went wrong. Please try again later.' };
+    }
+}
+
+export async function resetPassword(formData: FormData) {
+    const token = (formData.get('token') as string | null)?.trim() ?? '';
+    const password = formData.get('password') as string;
+
+    try {
+        const validatedFields = z
+            .object({
+                token: z.string().min(1, 'Reset token is required'),
+                password: z.string().min(8, 'Password must be at least 8 characters'),
+            })
+            .safeParse({ token, password });
+
+        if (!validatedFields.success) {
+            return { error: validatedFields.error.errors[0].message };
+        }
+
+        await ensurePasswordResetTable();
+
+        const resetRequest = await query(
+            'SELECT user_id, expires_at FROM password_reset_tokens WHERE token = $1',
+            [validatedFields.data.token]
+        );
+
+        const resetEntry = resetRequest[0];
+
+        if (!resetEntry) {
+            return { error: 'This password reset link is invalid or has already been used.' };
+        }
+
+        if (new Date(resetEntry.expires_at) < new Date()) {
+            await query('DELETE FROM password_reset_tokens WHERE token = $1', [
+                validatedFields.data.token,
+            ]);
+            return { error: 'This password reset link has expired.' };
+        }
+
+        const hashedPassword = await hash(validatedFields.data.password, 10);
+
+        await query('UPDATE users SET password = $1 WHERE id = $2', [
+            hashedPassword,
+            resetEntry.user_id,
+        ]);
+        await query('DELETE FROM password_reset_tokens WHERE token = $1', [
+            validatedFields.data.token,
+        ]);
+
+        return { success: 'Password updated successfully. You can sign in with your new password.' };
+    } catch (error) {
+        console.error('Error resetting password:', error);
+        return { error: 'Something went wrong. Please try again later.' };
     }
 }
 

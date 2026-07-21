@@ -1,19 +1,19 @@
 'use client';
 
 import type React from 'react';
-
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { CheckSquare } from 'lucide-react';
-import { registerUser } from '@/actions/auth-actions';
+import { resetPassword } from '@/actions/auth-actions';
 
-export default function RegisterPage() {
+export default function ResetPasswordPage() {
     const router = useRouter();
+    const params = useParams<{ token: string }>();
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -22,14 +22,15 @@ export default function RegisterPage() {
         setIsLoading(true);
 
         const formData = new FormData(event.currentTarget);
+        formData.set('token', params.token);
 
         try {
-            const result = await registerUser(formData);
+            const result = await resetPassword(formData);
 
             if (result.error) {
                 toast({
                     variant: 'destructive',
-                    title: 'Registration failed',
+                    title: 'Reset failed',
                     description: result.error,
                 });
                 setIsLoading(false);
@@ -37,10 +38,9 @@ export default function RegisterPage() {
             }
 
             toast({
-                title: 'Registration successful',
-                description: 'You can now sign in with your credentials',
+                title: 'Password updated',
+                description: result.success,
             });
-
             router.push('/login');
         } catch (error) {
             toast({
@@ -48,6 +48,7 @@ export default function RegisterPage() {
                 title: 'Something went wrong',
                 description: 'Please try again later',
             });
+        } finally {
             setIsLoading(false);
         }
     }
@@ -60,9 +61,9 @@ export default function RegisterPage() {
                         <CheckSquare className="h-6 w-6" />
                         <span className="text-2xl font-bold">Productivity</span>
                     </div>
-                    <h1 className="text-2xl font-semibold tracking-tight">Create an account</h1>
+                    <h1 className="text-2xl font-semibold tracking-tight">Choose a new password</h1>
                     <p className="text-sm text-muted-foreground">
-                        Enter your information to create an account
+                        Enter a new password for your account.
                     </p>
                 </div>
 
@@ -70,34 +71,7 @@ export default function RegisterPage() {
                     <form onSubmit={onSubmit}>
                         <div className="grid gap-4">
                             <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
-                                <Input
-                                    id="name"
-                                    name="name"
-                                    placeholder="John Doe"
-                                    type="text"
-                                    autoCapitalize="none"
-                                    autoCorrect="off"
-                                    disabled={isLoading}
-                                    required
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="email">Email</Label>
-                                <Input
-                                    id="email"
-                                    name="email"
-                                    placeholder="name@example.com"
-                                    type="email"
-                                    autoCapitalize="none"
-                                    autoComplete="email"
-                                    autoCorrect="off"
-                                    disabled={isLoading}
-                                    required
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="password">Password</Label>
+                                <Label htmlFor="password">New password</Label>
                                 <Input
                                     id="password"
                                     name="password"
@@ -109,17 +83,16 @@ export default function RegisterPage() {
                                 />
                             </div>
                             <Button type="submit" disabled={isLoading}>
-                                {isLoading ? 'Creating account...' : 'Create Account'}
+                                {isLoading ? 'Updating password...' : 'Update password'}
                             </Button>
                         </div>
                     </form>
                     <div className="text-center text-sm">
-                        Already have an account?{' '}
                         <Link
                             href="/login"
                             className="font-medium text-primary underline-offset-4 hover:underline"
                         >
-                            Sign in
+                            Back to sign in
                         </Link>
                     </div>
                 </div>
