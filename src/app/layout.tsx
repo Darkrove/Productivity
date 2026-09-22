@@ -18,6 +18,9 @@ export const metadata = constructMetadata({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" suppressHydrationWarning>
+            <head>
+                <script defer src="https://umami-space.vercel.app/script.js" data-website-id="dc19fda3-12c5-467d-b398-13e9fa57d27b"></script>
+            </head>
             <body
                 className={cn(
                     'min-h-screen bg-background font-sans antialiased',
