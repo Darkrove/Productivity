@@ -62,7 +62,7 @@ export default async function AllNotesPage() {
                     <TabsTrigger value="todo">To-do ({todoNotes.length})</TabsTrigger>
                 </TabsList>
                 <TabsContent value="all" className="mt-4">
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="columns-1 gap-4 md:columns-2 lg:columns-3">
                         {allNotes.length > 0 ? (
                             allNotes.map(note => (
                                 <NoteCard
@@ -73,14 +73,14 @@ export default async function AllNotesPage() {
                                 />
                             ))
                         ) : (
-                            <div className="col-span-full text-center py-8">
+                            <div className="w-full py-8 text-center">
                                 <p className="text-muted-foreground">No notes found.</p>
                             </div>
                         )}
                     </div>
                 </TabsContent>
                 <TabsContent value="important" className="mt-4">
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="columns-1 gap-4 md:columns-2 lg:columns-3">
                         {importantNotes.length > 0 ? (
                             importantNotes.map(note => (
                                 <NoteCard
@@ -91,14 +91,14 @@ export default async function AllNotesPage() {
                                 />
                             ))
                         ) : (
-                            <div className="col-span-full text-center py-8">
+                            <div className="w-full py-8 text-center">
                                 <p className="text-muted-foreground">No important notes found.</p>
                             </div>
                         )}
                     </div>
                 </TabsContent>
                 <TabsContent value="todo" className="mt-4">
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="columns-1 gap-4 md:columns-2 lg:columns-3">
                         {todoNotes.length > 0 ? (
                             todoNotes.map(note => (
                                 <NoteCard
@@ -109,7 +109,7 @@ export default async function AllNotesPage() {
                                 />
                             ))
                         ) : (
-                            <div className="col-span-full text-center py-8">
+                            <div className="w-full py-8 text-center">
                                 <p className="text-muted-foreground">No to-do notes found.</p>
                             </div>
                         )}

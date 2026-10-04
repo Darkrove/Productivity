@@ -4,7 +4,8 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { MoreHorizontal, Heart, MoreVertical } from 'lucide-react';
+import { MoreVertical } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -102,20 +103,22 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
         <>
             <Card
                 className={cn(
-                    'overflow-hidden transition-all flex flex-col h-full',
+                    'mb-4 inline-block w-full break-inside-avoid align-top overflow-hidden transition-all',
                     getColorClass(note.color)
                 )}
             >
-                <CardHeader className="p-4 pb-0 flex flex-row justify-between items-center">
-                    <div>
-                        <h3 className="font-semibold">{note.title}</h3>
+                <CardHeader className="flex flex-row items-center justify-between gap-3 p-4 pb-0">
+                    <div className="min-w-0 flex-1">
+                        <h3 className="truncate font-semibold" title={note.title}>
+                            {note.title}
+                        </h3>
                         <p className="text-xs text-muted-foreground dark:text-white">
                             {note.category}
                         </p>
                     </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="icon">
+                            <Button variant="outline" size="icon" className="shrink-0">
                                 <MoreVertical className="h-4 w-4" />
                                 <span className="sr-only">More options</span>
                             </Button>
@@ -131,24 +134,32 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
                     </DropdownMenu>
                 </CardHeader>
 
-                <CardContent className="p-4 flex-grow">
-                    {note.content && <p className="text-sm whitespace-pre-line">{note.content}</p>}
+                <CardContent className="min-w-0 w-full p-4">
+                    {note.content && (
+                        <div
+                            className="break-words whitespace-pre-line text-sm [&_a]:underline [&_blockquote]:my-1 [&_blockquote]:border-l-2 [&_blockquote]:pl-3 [&_blockquote]:italic [&_em]:italic [&_ol]:my-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:my-1 [&_strong]:font-semibold [&_ul]:my-1 [&_ul]:list-disc [&_ul]:pl-5"
+                        >
+                            <ReactMarkdown>{note.content}</ReactMarkdown>
+                        </div>
+                    )}
                 </CardContent>
 
-                <CardFooter className="border-t p-4 flex justify-between items-center bg-white bg-opacity-50 mt-auto">
-                    <div className="flex items-center gap-2">
+                <CardFooter className="flex items-center justify-between gap-3 border-t bg-white bg-opacity-50 p-4">
+                    <div className="flex min-w-0 items-center gap-2">
                         <Avatar className="h-6 w-6">
                             <AvatarImage src={note.creator_image || ''} alt={note.creator_name} />
                             <AvatarFallback>{note.creator_name.charAt(0)}</AvatarFallback>
                         </Avatar>
-                        
-                        <span className="text-xs text-muted-foreground dark:text-white">
-                                {note.creator_name}
-                            </span>
-                    </div>
-                    <span className="text-xs text-muted-foreground dark:text-white">
-                            Created: {formatDate(note.created_at)}
+                        <span
+                            className="truncate text-xs text-muted-foreground dark:text-white"
+                            title={note.creator_name}
+                        >
+                            {note.creator_name}
                         </span>
+                    </div>
+                    <span className="shrink-0 text-xs text-muted-foreground dark:text-white">
+                        Created: {formatDate(note.created_at)}
+                    </span>
                 </CardFooter>
             </Card>
 

@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { NoteContentEditor } from '@/components/note-content-editor';
 import {
     Select,
     SelectContent,
@@ -80,7 +80,7 @@ export function CreateNoteDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl">
                 <form onSubmit={onSubmit}>
                     <DialogHeader>
                         <DialogTitle>Create New Note</DialogTitle>
@@ -99,13 +99,7 @@ export function CreateNoteDialog({
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="content">Content</Label>
-                            <Textarea
-                                id="content"
-                                name="content"
-                                placeholder="Note content"
-                                disabled={isLoading}
-                                rows={5}
-                            />
+                            <NoteContentEditor disabled={isLoading} />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="grid gap-2">

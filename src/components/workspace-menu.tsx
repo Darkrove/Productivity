@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MoreVertical, Users, Pencil, Trash2, PlusCircle, StickyNote } from 'lucide-react';
 
@@ -53,6 +53,33 @@ export function WorkspaceMenu({
   const { toast } = useToast();
   const router = useRouter();
 
+  useEffect(() => {
+    const handleShortcut = (event: KeyboardEvent) => {
+      if (event.altKey || event.ctrlKey || event.metaKey || event.repeat) return;
+
+      const target = event.target;
+      if (
+        target instanceof HTMLElement &&
+        target.closest(
+          '[role="dialog"], [role="menu"], input, textarea, select, [contenteditable="true"], [role="textbox"], [role="combobox"]'
+        )
+      ) {
+        return;
+      }
+
+      if (event.key.toLowerCase() === 'n') {
+        event.preventDefault();
+        setIsNoteDialogOpen(true);
+      } else if (event.key.toLowerCase() === 't') {
+        event.preventDefault();
+        setIsTaskDialogOpen(true);
+      }
+    };
+
+    document.addEventListener('keydown', handleShortcut);
+    return () => document.removeEventListener('keydown', handleShortcut);
+  }, []);
+
   const handleDeleteWorkspace = async () => {
     try {
       const response = await fetch(`/api/workspaces/${workspaceId}`, {
@@ -100,10 +127,16 @@ export function WorkspaceMenu({
           <DropdownMenuItem onClick={() => setIsTaskDialogOpen(true)}>
             <PlusCircle className="mr-2 h-4 w-4" />
             Create Task
+            <kbd className="ml-auto rounded border px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+              T
+            </kbd>
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setIsNoteDialogOpen(true)}>
             <StickyNote className="mr-2 h-4 w-4" />
             Create Note
+            <kbd className="ml-auto rounded border px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+              N
+            </kbd>
           </DropdownMenuItem>
           {isOwner && (
             <>

@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { NoteContentEditor } from '@/components/note-content-editor';
 import {
     Select,
     SelectContent,
@@ -91,7 +91,7 @@ export function EditNoteDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-2xl">
                 <form onSubmit={onSubmit}>
                     <DialogHeader>
                         <DialogTitle>Edit Note</DialogTitle>
@@ -111,13 +111,10 @@ export function EditNoteDialog({
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="content">Content</Label>
-                            <Textarea
-                                id="content"
-                                name="content"
-                                placeholder="Note content"
-                                defaultValue={note.content || ''}
+                            <NoteContentEditor
+                                key={`${note.id}-${note.content ?? ''}`}
+                                defaultValue={note.content ?? ''}
                                 disabled={isLoading}
-                                rows={5}
                             />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
@@ -152,7 +149,7 @@ export function EditNoteDialog({
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button className='w-full' type="submit" disabled={isLoading}>
+                        <Button className="w-full" type="submit" disabled={isLoading}>
                             {isLoading ? 'Updating...' : 'Update Note'}
                         </Button>
                     </DialogFooter>

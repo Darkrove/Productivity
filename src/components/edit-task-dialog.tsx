@@ -112,7 +112,7 @@ export function EditTaskDialog({
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="max-h-[90dvh] overflow-y-auto sm:max-w-xl">
                 <form onSubmit={onSubmit}>
                     <DialogHeader>
                         <DialogTitle>Edit Task</DialogTitle>
