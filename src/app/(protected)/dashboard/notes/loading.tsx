@@ -5,13 +5,10 @@ export default function NotesLoading() {
     <>
       <Skeleton className="mb-4 h-18 w-full rounded-lg" />
       <Skeleton className="mb-4 h-10 w-1/2 rounded-lg" />
-      <div className="columns-1 gap-4 md:columns-2 lg:columns-3">
-        <Skeleton className="mb-4 h-52 w-full break-inside-avoid rounded-lg" />
-        <Skeleton className="mb-4 h-72 w-full break-inside-avoid rounded-lg" />
-        <Skeleton className="mb-4 h-60 w-full break-inside-avoid rounded-lg" />
-        <Skeleton className="mb-4 h-64 w-full break-inside-avoid rounded-lg" />
-        <Skeleton className="mb-4 h-48 w-full break-inside-avoid rounded-lg" />
-        <Skeleton className="mb-4 h-72 w-full break-inside-avoid rounded-lg" />
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Skeleton className="h-72 w-full rounded-lg" />
+        <Skeleton className="h-72 w-full rounded-lg" />
+        <Skeleton className="h-72 w-full rounded-lg" />
       </div>
     </>
   );

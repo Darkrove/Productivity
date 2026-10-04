@@ -103,7 +103,7 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
         <>
             <Card
                 className={cn(
-                    'mb-4 inline-block w-full break-inside-avoid align-top overflow-hidden transition-all',
+                    'flex h-full flex-col overflow-hidden transition-all',
                     getColorClass(note.color)
                 )}
             >
@@ -134,7 +134,7 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
                     </DropdownMenu>
                 </CardHeader>
 
-                <CardContent className="min-w-0 w-full p-4">
+                <CardContent className="min-w-0 w-full flex-grow p-4">
                     {note.content && (
                         <div
                             className="break-words whitespace-pre-line text-sm [&_a]:underline [&_blockquote]:my-1 [&_blockquote]:border-l-2 [&_blockquote]:pl-3 [&_blockquote]:italic [&_em]:italic [&_ol]:my-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_p]:my-1 [&_strong]:font-semibold [&_ul]:my-1 [&_ul]:list-disc [&_ul]:pl-5"
@@ -144,7 +144,7 @@ export function NoteCard({ note, workspaceId, userId, onEdit, onDelete }: NoteCa
                     )}
                 </CardContent>
 
-                <CardFooter className="flex items-center justify-between gap-3 border-t bg-white bg-opacity-50 p-4">
+                <CardFooter className="mt-auto flex items-center justify-between gap-3 border-t bg-white bg-opacity-50 p-4">
                     <div className="flex min-w-0 items-center gap-2">
                         <Avatar className="h-6 w-6">
                             <AvatarImage src={note.creator_image || ''} alt={note.creator_name} />
